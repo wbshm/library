@@ -1,25 +1,35 @@
-package main.com.library.Controller;
+package main.com.library.controller;
 
-import main.com.library.Bean.UserDao;
-import main.com.library.Service.Impl.UserServiceImpl;
-import main.com.library.Service.UserService;
+import main.com.library.bean.UserDao;
+import main.com.library.service.impl.UserServiceImpl;
+import main.com.library.service.UserService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+/**
+ * @author wangrq
+ */
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
-    private UserService userService = new UserServiceImpl();
+    @Qualifier("userService")
+    private UserService userService;
 
-    @RequestMapping("/login")
-    public ModelAndView login(String name, String password, ModelAndView mv) {
-        UserDao user = userService.login(name, password);
+
+    @RequestMapping(value = "/login")
+    public ModelAndView login(UserDao userDao, ModelAndView mv) {
+        System.out.println(userDao.toString());
+        if (userDao == null) {
+            mv.setView(new RedirectView("index"));
+        }
+        UserDao user = userService.login(userDao.getName(), userDao.getPassword());
         if (user != null) {
-            mv.setView(new RedirectView("/index"));
+            mv.setView(new RedirectView("index"));
         } else {
             mv.addObject("message", "错误");
             mv.setViewName("login");

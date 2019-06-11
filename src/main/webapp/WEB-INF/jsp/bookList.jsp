@@ -6,11 +6,25 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>BookList</title>
-</head>
+<%@ include file="_header.jsp" %>
 <body>
-这是图书列表，待完善。。。
+欢迎${sessionScope.user.username}访问:
+<br>
+<table border="1">
+    <tr>
+        <th>封面</th>
+        <th>书名</th>
+        <th>作者</th>
+        <th>价格</th>
+    </tr>
+    <c:forEach items="${books}" var="book">
+        <tr>
+            <td><img src=images/${book.cover} height="60"></td>
+            <td>${book.book_name}</td>
+            <td>${book.author}</td>
+            <td>${book.prize}</td>
+        </tr>
+    </c:forEach>
+</table>
 </body>
-</html>
+<%@ include file="_footer.jsp" %>

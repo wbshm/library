@@ -1,13 +1,12 @@
-package main.com.library.Service.Impl;
+package main.com.library.service.impl;
 
-import main.com.library.Bean.UserDao;
-import main.com.library.Service.UserService;
+import main.com.library.service.UserService;
+import main.com.library.bean.UserDao;
 
 public class UserServiceImpl implements UserService {
 
     @Override
     public UserDao login(String name, String password) {
-
         return null;
     }
 }
