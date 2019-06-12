@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -26,7 +27,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/login")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(UserDao userDao, ModelAndView mv, HttpSession session) {
         UserDao historyUserDao = checkLogin(session);
         if (null != historyUserDao) {
@@ -52,10 +53,15 @@ public class UserController {
         return mv;
     }
 
+
+    public String register(String name, String password) {
+        return "success";
+    }
+
     private UserDao checkLogin(HttpSession session) {
         String username = (String) session.getAttribute("username");
         String password = (String) session.getAttribute("password");
-        String id = session.getId();
+        String id       = session.getId();
         System.out.println(username);
         System.out.println(password);
         System.out.println(id);

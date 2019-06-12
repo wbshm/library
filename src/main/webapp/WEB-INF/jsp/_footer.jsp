@@ -5,4 +5,5 @@
   Time: 9:12
   To change this template use File | Settings | File Templates.
 --%>
+<script src="/static/js/bootstrap.js"></script>
 </html>

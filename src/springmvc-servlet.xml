@@ -5,11 +5,10 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
        xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
-        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+
         http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
     <mybatis:scan base-package="main.com.library.mapper"/>
     <context:component-scan base-package="main.com.library"/>
@@ -17,7 +16,7 @@
     <!-- 使用PropertyOverrideConfigurer后处理器加载数据源参数 -->
     <context:property-override location="classpath:databases.properties"/>
     <!-- don't handle the static resource -->
-    <mvc:default-servlet-handler/>
+
 
     <!-- 配置c3p0数据源 -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"/>
@@ -26,7 +25,6 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
     </bean>
-
     <bean id="bookMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="main.com.library.mapper.BookMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
@@ -58,9 +56,17 @@
     <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" p:dataSource-ref="dataSource"/>-->
 
     <!-- 启用支持annotation注解方式事务管理 -->
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!--<tx:annotation-driven/>-->
     <!-- 配置Spring mvc的注解驱动 -->
+
     <mvc:annotation-driven conversion-service="converterService"/>
+    <!-- 允许对静态资源文件的访问 -->
+    <!--将静态资源交给defaultServlet处理，不给springmvc处理-->
+    <!--<mvc:default-servlet-handler />-->
+    <mvc:resources mapping="/static/**" location="WEB-INF/static/" cache-period="31556926"/>
+    <!--
+    http://localhost:8080/static/css/bootstrap.css
+    -->
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
           id="internalResourceViewResolver">
