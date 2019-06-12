@@ -19,7 +19,8 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    private final UserService userService;
+    private final        UserService userService;
+    private static final String      TPL_PRE = "user/";
 
     @Autowired
     public UserController(@Qualifier("userService") UserService userService) {
@@ -47,15 +48,20 @@ public class UserController {
                 mv.setView(new RedirectView("index"));
             } else {
                 mv.addObject("message", "账号或者密码错误。请重试");
-                mv.setViewName("login");
+                mv.setViewName(TPL_PRE + "login");
             }
         }
         return mv;
     }
 
+    @RequestMapping(value = "register", method = RequestMethod.GET)
+    public String register() {
+        return TPL_PRE + "register";
+    }
 
-    public String register(String name, String password) {
-        return "success";
+    @RequestMapping(value = "register", method = RequestMethod.POST)
+    public String register(UserDao userDao) {
+        return TPL_PRE + "register";
     }
 
     private UserDao checkLogin(HttpSession session) {
