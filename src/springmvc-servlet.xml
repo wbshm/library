@@ -28,8 +28,13 @@
     </bean>
 
     <bean id="bookMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="main.com.library.mapper.BookMapper" />
-        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+        <property name="mapperInterface" value="main.com.library.mapper.BookMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="main.com.library.mapper.UserMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
 
     <!-- JDBC事务管理器 -->
@@ -44,8 +49,6 @@
             </set>
         </property>
     </bean>
-
-
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxInMemorySize" value="5242880"/>

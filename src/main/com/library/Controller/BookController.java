@@ -12,21 +12,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
+/**
+ * @author wangrq
+ */
 @Controller
 @RequestMapping("/book")
 public class BookController {
     private String title;
 
+    private final BookService bookService;
+
     @Autowired
-    @Qualifier("bookService")
-    private BookService bookService;
-
-    BookController() {
+    public BookController(@Qualifier("bookService") BookService bookService) {
         this.title = "图书管理系统";
-    }
-
-    BookController(String title) {
-        this.title = title;
+        this.bookService = bookService;
     }
 
 

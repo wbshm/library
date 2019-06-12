@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: 4399
@@ -5,8 +6,11 @@
   Time: 11:08
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>--%>
+<%@ page pageEncoding="utf-8" isELIgnored="false"%>
+
 <%@ include file="_header.jsp" %>
+<%@ page language="java" import="java.util.*"%>
 <body>
 欢迎${sessionScope.user.username}访问:
 <br>
@@ -26,5 +30,4 @@
         </tr>
     </c:forEach>
 </table>
-</body>
 <%@ include file="_footer.jsp" %>

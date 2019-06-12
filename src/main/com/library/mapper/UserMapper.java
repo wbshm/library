@@ -1,11 +1,29 @@
 package main.com.library.mapper;
 
 import main.com.library.bean.UserDao;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 public interface UserMapper {
-    @Select("select * from tb_user where loginname=#{loginname} and password=#{password}") //以#{}的方式表示sql中的参数
-    UserDao finwithLoginnameAndPassword(@Param("loginname")String loginname, @Param("password")String password);//@param表示上面sql中的参数
 
+    /**
+     * 以#{}的方式表示sql中的参数
+     *
+     * @param name
+     * @param password
+     * @return
+     * @param表示上面sql中的参数
+     */
+    @Select("select * from lib_user where name=#{name} and password=#{password}")
+    UserDao finwithLoginnameAndPassword(@Param("name") String name, @Param("password") String password);
+
+
+    /**
+     * @param name
+     * @param password
+     * @return
+     */
+    @Insert("INSERT INTO tb_user('name','password') VALUES (#{name},#{password})")
+    boolean addUser(@Param("name") String name, @Param("password") String password);
 }

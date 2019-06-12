@@ -11,10 +11,9 @@ public interface UserService {
     /**
      * 用户登陆
      *
-     * @param loginName 登陸名
+     * @param name 登陸名
      * @param password  登錄密码
      * @return userDao
      */
-    @Select("select * from tb_user where loginname=#{loginname} and password=#{password}")
-    UserDao login(String loginName, String password);
+    UserDao login(String name, String password);
 }

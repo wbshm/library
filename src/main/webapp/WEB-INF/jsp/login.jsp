@@ -5,17 +5,14 @@
   Time: 14:09
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Login Page</title>
-</head>
+<%@ page pageEncoding="utf-8" isELIgnored="false"%>
+<%@include file="_header.jsp" %>
 <body>
 <form action="login" method="post">
     <table>
         <tr>
             <td><label>登录名</label></td>
-            <td><input type="text" id="loginname" name="loginname"></td>
+            <td><input type="text" id="name" name="name"></td>
         </tr>
         <tr>
             <td><label>密码</label></td>
@@ -25,7 +22,7 @@
             <td><input type="submit" value="登录"/></td>
         </tr>
     </table>
-    <font color="red">${requestScope.message}</font>
+    <font color="red">${message}</font>
 </form>
 </body>
-</html>
+<%@include file="_footer.jsp" %>
