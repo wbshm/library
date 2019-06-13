@@ -2,6 +2,7 @@ package main.com.library.controller;
 
 import main.com.library.service.BookService;
 import main.com.library.bean.BookDao;
+import org.apache.catalina.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -19,7 +22,6 @@ import java.util.List;
 @RequestMapping("/book")
 public class BookController {
     private String title;
-
     private final BookService bookService;
 
     @Autowired
@@ -36,7 +38,10 @@ public class BookController {
     }
 
     @RequestMapping("/list")
-    public String getBookList(Model model) {
+    public String getBookList(Model model, HttpServletRequest servletRequest) {
+        if (checkLogin(servletRequest.getSession())) {
+            System.out.println("登陆成功");
+        }
         List<BookDao> books = bookService.getAll();
         System.out.println(books);
         System.out.println(this.title);
@@ -48,5 +53,11 @@ public class BookController {
     @RequestMapping(value = "/find", method = {RequestMethod.POST, RequestMethod.GET}, params = {"pid", "z"})
     public String getBook() {
         return "";
+    }
+
+    private boolean checkLogin(HttpSession session) {
+        session.getAttribute("account");
+        session.getAttribute("password");
+        return false;
     }
 }

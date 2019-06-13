@@ -15,5 +15,14 @@ public interface UserService {
      */
     UserDao login(String account, String password);
 
-    boolean register(String name, String account, String password, String age);
+    /**
+     * 注册账号
+     *
+     * @param name     姓名
+     * @param account  账号
+     * @param password 密码
+     * @param age      年龄
+     * @return boolean
+     */
+    boolean register(String name, String account, String password, int age);
 }

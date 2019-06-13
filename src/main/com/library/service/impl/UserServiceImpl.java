@@ -23,13 +23,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDao login(String account, String password) {
+        if (null == account || null == password) {
+            return null;
+        }
         return userMapper.finwithLoginnameAndPassword(account, password);
     }
 
     @Override
-    public boolean register(String name, String account, String password, String age) {
+    public boolean register(String name, String account, String password, int age) {
         if (userMapper.finwithLoginnameAndPassword(account, password) == null) {
-            int res = userMapper.addUser(name, age, account, password);
+            int res = userMapper.addUser(name, account, password, age);
             System.out.println(res);
             return res > 0;
         }
