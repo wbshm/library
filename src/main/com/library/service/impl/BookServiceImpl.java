@@ -46,4 +46,25 @@ public class BookServiceImpl implements BookService, Serializable {
     public List<BookDao> getAll() {
         return bookMapper.getAll();
     }
+
+    @Override
+    public BookDao getBookById(int id) {
+        return bookMapper.getBookById(id);
+    }
+
+    @Override
+    public int updateById(BookDao book) {
+//        return bookMapper.updateById(book.getAuthor(), book.getBook_name(), book.getCover(), book.getPrize(), book.getId());
+        return bookMapper.updateById(book);
+    }
+
+    @Override
+    public int deleteById(int id) {
+        return bookMapper.deleteById(id);
+    }
+
+    @Override
+    public int insertBook(BookDao book) {
+        return bookMapper.insertBook(book);
+    }
 }

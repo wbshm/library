@@ -20,14 +20,13 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    private final UserService userService;
-    private static final String TPL_PRE = "user/";
+    private final        UserService userService;
+    private static final String      TPL_PRE = "user/";
 
     @Autowired
     public UserController(@Qualifier("userService") UserServiceImpl userService) {
         this.userService = userService;
     }
-
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(UserDao userDao, ModelAndView mv, HttpSession session) {
@@ -35,25 +34,23 @@ public class UserController {
         UserDao historyUserDao = checkLogin(session);
         System.out.println("打印" + userDao.toString());
         System.out.println(historyUserDao);
-        if (null != historyUserDao) {
-            mv.setView(new RedirectView("redirect:/book/list"));
-        }
-        if (null == userDao.getAccount()) {
-            mv.setView(new RedirectView("login"));
+        if (null != historyUserDao) { //如果有cookie记录的话，则跳转至
+            mv.setViewName("redirect:/book/list");
         } else {
-            session.setAttribute("account", null);
-            session.setAttribute("password", null);
-            UserDao user = userService.login(userDao.getAccount(), userDao.getPassword());
-            System.out.println(user.toString());
-            System.out.println(user.getName());
-            System.out.println(user.getPassword());
-            if (null != user) {
-                session.setAttribute("account", userDao.getAccount());
-                session.setAttribute("password", userDao.getPassword());
-                mv.setView(new RedirectView("redirect:/book/list"));
+            if (null == userDao.getAccount()) {
+                mv.setView(new RedirectView("login"));
             } else {
-                mv.addObject("message", "账号或者密码错误。请重试");
-                mv.setViewName(TPL_PRE + "login");
+                session.setAttribute("account", null);
+                session.setAttribute("password", null);
+                UserDao user = userService.login(userDao.getAccount(), userDao.getPassword());
+                if (null != user) {
+                    session.setAttribute("account", userDao.getAccount());
+                    session.setAttribute("password", userDao.getPassword());
+                    mv.setViewName("redirect:/book/list");
+                } else {
+                    mv.addObject("message", "账号或者密码错误。请重试");
+                    mv.setViewName(TPL_PRE + "login");
+                }
             }
         }
         return mv;
@@ -73,13 +70,12 @@ public class UserController {
     private UserDao checkLogin(HttpSession session) {
         String username = (String) session.getAttribute("username");
         String password = (String) session.getAttribute("password");
-        String id = session.getId();
+        String id       = session.getId();
         System.out.println(username);
         System.out.println(password);
         System.out.println(id);
         return userService.login(username, password);
     }
-
 
     @RequestMapping(value = "/{formName}", method = RequestMethod.GET)
     public String loginForm(@PathVariable String formName) {

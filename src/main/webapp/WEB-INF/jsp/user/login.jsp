@@ -25,6 +25,7 @@
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
             <label class="form-check-label" for="exampleCheck1">记住我</label>
         </div>
+        <div class="">${message}</div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>

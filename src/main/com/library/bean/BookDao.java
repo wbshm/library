@@ -54,4 +54,8 @@ public class BookDao extends CommonDao {
     public void setPrize(double prize) {
         this.prize = prize;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
