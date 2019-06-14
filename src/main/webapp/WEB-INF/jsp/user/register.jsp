@@ -9,35 +9,54 @@
 <%@include file="../_header.jsp" %>
 <body>
 <div class="container bs-docs-container">
-    <form>
+    <form method="post" id="registerForm">
         <div class="form-group">
-            <label for="inputName">name</label>
+            <label for="inputName">account</label>
             <input type="text" class="form-control" id="inputName" aria-describedby="name"
-                   name="name"
+                   name="account"
                    placeholder="Enter register name">
-            <small id="nameHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <small id="nameHelp" class="form-text text-muted">账号</small>
         </div>
         <div class="form-group">
-            <label for="inputAccount">name</label>
+            <label for="inputAccount">nickname</label>
             <input type="text" class="form-control" id="inputAccount" aria-describedby="account"
                    name="name"
-                   placeholder="Enter register name">
-            <small id="accountHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                   placeholder="Enter nickname">
+            <small id="accountHelp" class="form-text text-muted">昵称</small>
         </div>
         <div class="form-group">
-            <label for="inputAccount">name</label>
-            <input type="number" class="form-control" id="inputAge" aria-describedby="age"
-                   name="name"
-                   placeholder="Enter register name">
-            <small id="ageHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <label for="inputAge">age</label>
+            <input type="number" class="form-control" id="inputAge" aria-describedby="年龄"
+                   name="age"
+                   placeholder="Enter age">
         </div>
         <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" name="password"
+            <label for="inputPassword">Password</label>
+            <input type="password" class="form-control" id="inputPassword" name="password"
                    placeholder="Password">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn" onclick="history.go(-1)">返回</button>
+        <button type="button" class="btn btn-primary submit">Submit</button>
     </form>
 </div>
 </body>
+<script>
+    $(".submit").on('click', function () {
+        $.ajax({
+            url: '/user/register',
+            type: 'post',
+            dataType: 'json',
+            data: $("#registerForm").serialize(),
+            success: function (res) {
+                if (res === 1) {
+                    bootbox.alert(res.msg, function () {
+                        $(location).attr('href', '/user/login');
+                    });
+                }
+                bootbox.alert(res.msg);
+            }
+        });
+        return false;
+    })
+</script>
 <%@include file="../_footer.jsp" %>

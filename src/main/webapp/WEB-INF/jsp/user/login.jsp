@@ -9,8 +9,14 @@
 <%@include file="../_header.jsp" %>
 <body>
 <div class="container bs-docs-container">
+    <h3>欢迎来到图书馆系统</h3>
+    <div class="row justify-content-end">
+        <div class="col-4">
+            <button class="btn btn-info" onclick="window.location='/user/register'">注册</button>
+        </div>
+    </div>
     <form method="post" action="/user/login">
-        <div class="form-group" >
+        <div class="form-group">
             <label for="exampleInputEmail1">Login Name</label>
             <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                    placeholder="Enter Username" name="account">
