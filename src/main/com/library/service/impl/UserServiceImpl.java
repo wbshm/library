@@ -30,12 +30,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean register(String name, String account, String password, int age) {
-        if (userMapper.finwithLoginnameAndPassword(account, password) == null) {
-            int res = userMapper.addUser(name, account, password, age);
-            System.out.println(res);
-            return res > 0;
+    public int register(UserDao userDao) {
+        if (userMapper.getUserByAccount(userDao.getAccount()) == null) {
+            return userMapper.addUser(userDao);
         }
-        return false;
+        return 0;
     }
+
+//    public boolean register(String name, String account, String password, int age) {
+//        if (userMapper.finwithLoginnameAndPassword(account, password) == null) {
+//            int res = userMapper.addUser(name, account, password, age);
+//            System.out.println(res);
+//            return res > 0;
+//        }
+//        return false;
+//    }
 }

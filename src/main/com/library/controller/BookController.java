@@ -1,16 +1,13 @@
 package main.com.library.controller;
 
+import main.com.library.bean.BookDao;
 import main.com.library.bean.JsonDao;
 import main.com.library.bean.UserDao;
 import main.com.library.service.BookService;
-import main.com.library.bean.BookDao;
 import main.com.library.service.UserService;
-import main.com.library.service.impl.UserServiceImpl;
-import org.apache.catalina.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author wangrq
@@ -30,10 +26,10 @@ import java.util.Map;
 @Controller
 @RequestMapping("/book")
 public class BookController {
-    private       String      title;
+    private String title;
     private final BookService bookService;
     private final UserService userService;
-    private       UserDao     userDao;
+    private UserDao userDao;
 
     @Autowired
     public BookController(@Qualifier("bookService") BookService bookService, @Qualifier("userService") UserService userService) {
@@ -42,25 +38,39 @@ public class BookController {
         this.userService = userService;
     }
 
-
     @RequestMapping("/save")
     public String saveBook(ModelMap modelMap) {
         modelMap.addAttribute("title", this.title);
-        return "index";
+
+        return "book/list";
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST, params = {"author", "book_name", "cover", "prize"})
+    @ResponseBody
+    public Object addBook(BookDao bookDao) {
+        JsonDao jsonDao = new JsonDao();
+        if (null == bookDao.getBook_name() || null == bookDao.getAuthor() || 0 == (int) bookDao.getPrize() || null == bookDao.getCover()) {
+            jsonDao.setJson(-1, "参数错误");
+        } else {
+            int effectRow = bookService.insertBook(bookDao);
+            if (effectRow > 0) {
+                jsonDao.setJson(1, "添加成功", bookDao);
+            } else {
+                jsonDao.setJson(-3, "添加失败");
+            }
+        }
+        return jsonDao;
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView getBookList(ModelAndView mv, HttpServletRequest servletRequest) {
-        if (checkLogin(servletRequest.getSession())) {
-            System.out.println("登陆成功");
-        } else {
+        if (!checkLogin(servletRequest.getSession())) {
             System.out.println("登陆失败哟");
             mv.setViewName("redirect:/user/login");
             return mv;
         }
+        System.out.println("登陆成功");
         List<BookDao> books = bookService.getAll();
-        System.out.println(books);
-        System.out.println(this.title);
         mv.addObject("title", this.title);
         mv.addObject("books", books);
         mv.addObject("username", userDao.getName());
@@ -74,7 +84,7 @@ public class BookController {
     }
 
     private boolean checkLogin(HttpSession session) {
-        String account  = (String) session.getAttribute("account");
+        String account = (String) session.getAttribute("account");
         String password = (String) session.getAttribute("password");
         userDao = userService.login(account, password);
         return userDao != null;
@@ -87,9 +97,9 @@ public class BookController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, params = "prize")
-    public @ResponseBody
-    Object update(@PathVariable int id, double prize) {
-        BookDao book    = bookService.getBookById(id);
+    @ResponseBody
+    public Object update(@PathVariable int id, double prize) {
+        BookDao book = bookService.getBookById(id);
         System.out.println(book.toString());
         JsonDao jsonDao = new JsonDao();
         if (book == null) {
@@ -100,10 +110,10 @@ public class BookController {
             } else {
                 book.setPrize(prize);
                 int res = bookService.updateById(book);
-                if(res>0) {
+                if (res > 0) {
                     jsonDao.setJson(1, "更新成功", book);
-                }else{
-                    jsonDao.setJson(-3,"更新失败,看看你都传了什么鬼参数",book);
+                } else {
+                    jsonDao.setJson(-3, "更新失败,看看你都传了什么鬼参数", book);
                 }
             }
         }
@@ -111,9 +121,9 @@ public class BookController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public @ResponseBody
-    Object delete(@PathVariable int id) {
-        BookDao book    = bookService.getBookById(id);
+    @ResponseBody
+    public Object delete(@PathVariable int id) {
+        BookDao book = bookService.getBookById(id);
         JsonDao jsonDao = new JsonDao();
         if (book == null) {
             jsonDao.setCode(-3);

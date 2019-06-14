@@ -18,11 +18,8 @@ public interface UserService {
     /**
      * 注册账号
      *
-     * @param name     姓名
-     * @param account  账号
-     * @param password 密码
-     * @param age      年龄
-     * @return boolean
+     * @param userDao 用户对象
+     * @return int 返回影响的行数
      */
-    boolean register(String name, String account, String password, int age);
+    int register(UserDao userDao);
 }
